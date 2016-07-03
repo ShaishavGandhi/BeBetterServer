@@ -14,10 +14,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var port = process.env.PORT || 8080;        // set our port
-
+      
 // Setting up database connections
 var mongoose = require('mongoose')
-mongoose.connect('mongodb://shaishgandhi:PinkFloyd786@ds011715.mlab.com:11715/bebetter');
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } }; 
+
+mongoose.connect('mongodb://shaishgandhi:PinkFloyd786@ds011715.mlab.com:11715/bebetter',options);
 
 var User = require('./app/models/user');
 
@@ -52,7 +55,6 @@ router.route('/users')
     })
 
     .get(function(req,res){
-
     	User.find(function(err,users){
     		if(err)
     			res.send(err)
