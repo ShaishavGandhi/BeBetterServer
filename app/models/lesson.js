@@ -8,7 +8,7 @@ var LessonSchema = new Schema({
 	title : String,
 	lesson : String,
 	categories : [String],
-	createdAt : Date,
+	createdAt : Number,
 	localId : Number,
 	public : Boolean,
 	user : [{type: Schema.Types.Mixed }]

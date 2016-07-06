@@ -77,7 +77,7 @@ router.route('/users')
     	var arr = req.body.categories.split(',');
     	lesson.categories = arr;
     	lesson.public = req.body.public;
-    	lesson.createdAt = new Date().getTime();
+    	lesson.createdAt = Number(req.body.createdAt);
     	lesson.localId = parseInt(req.body.localId);
 
     	User.find({"email" : req.body.email},function(err,usr){
@@ -102,6 +102,22 @@ router.route('/users')
     		if(err)
     			res.send(err)
     		res.send(lessons)
+    	})
+
+    });
+
+    router.route('/lessons/:email/:createdAt')
+
+    .get(function(req,res){
+    	Lesson.find({
+    		'user.email' : req.params.email, 
+    		createdAt :{
+    			$gt : Number(req.params.createdAt)
+    		}
+    	},function(err,lessons){
+    		if(err)
+    			res.send(err)
+    		res.json(lessons)
     	})
 
     })
