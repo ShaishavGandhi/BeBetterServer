@@ -14,15 +14,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var port = process.env.PORT || 8080;        // set our port
-      
+
 // Setting up database connections
 var mongoose = require('mongoose')
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } }; 
+replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } }; 
 
 mongoose.connect('mongodb://shaishgandhi:PinkFloyd786@ds011715.mlab.com:11715/bebetter',options);
+// mongoose.connect('mongodb://localhost:27017/bebetter')
 
 var User = require('./app/models/user');
+var Lesson = require('./app/models/lesson')
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -38,18 +40,19 @@ router.route('/users')
 
     // create a user (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res) {
-        
+
         var user = new User();      // create a new instance of the User model
         user.name = req.body.name;  // set the user name (comes from the request)
         user.email = req.body.email;
         user.photo = req.body.photo;
+        user.createdAt = new Date().getTime();
 
         // save the user and check for errors
         user.save(function(err) {
-            if (err)
-                res.send(err);
+        	if (err)
+        		res.send(err);
 
-            res.json({ message: 'User created!' });
+        	res.json({ message: 'User created!' });
         });
         
     })
@@ -62,13 +65,51 @@ router.route('/users')
     			res.json(users)
     	});
 
+    });
+
+    router.route('/lessons')
+
+    .post(function(req,res){
+
+    	var lesson = new Lesson();
+    	lesson.title = req.body.title;
+    	lesson.lesson = req.body.lesson;
+    	lesson.category = req.body.category;
+    	lesson.public = req.body.public;
+    	lesson.createdAt = new Date().getTime();
+    	lesson.localId = parseInt(req.body.localId);
+
+    	User.find({"email" : req.body.email},function(err,usr){
+    		if(err)
+    			res.send(err);
+    		lesson.user = usr;
+    		lesson.save(function(err,less){
+    			if(err)
+    				res.send(err);
+
+    			res.json({
+    				message : 'Lesson created',
+    				lesson : less
+    			});
+    		})
+    	})	
+
+    })
+
+    .get(function(req,res){
+    	Lesson.find(function(err,lessons){
+    		if(err)
+    			res.send(err)
+    		res.send(lessons)
+    	})
+
     })
 
 
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+	res.json({ message: 'hooray! welcome to our api!' });   
 });
 
 // more routes for our API will happen here
