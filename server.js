@@ -74,7 +74,8 @@ router.route('/users')
     	var lesson = new Lesson();
     	lesson.title = req.body.title;
     	lesson.lesson = req.body.lesson;
-    	lesson.category = req.body.category;
+    	var arr = req.body.categories.split(',');
+    	lesson.categories = arr;
     	lesson.public = req.body.public;
     	lesson.createdAt = new Date().getTime();
     	lesson.localId = parseInt(req.body.localId);
