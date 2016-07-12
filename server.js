@@ -17,8 +17,8 @@ var port = process.env.PORT || 8080;        // set our port
 
 // Setting up database connections
 var mongoose = require('mongoose')
-var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
-replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } }; 
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 
 mongoose.connect('mongodb://shaishgandhi:PinkFloyd786@ds011715.mlab.com:11715/bebetter',options);
 // mongoose.connect('mongodb://localhost:27017/bebetter')
@@ -54,7 +54,7 @@ router.route('/users')
 
         	res.json({ message: 'User created!' });
         });
-        
+
     })
 
     .get(function(req,res){
@@ -93,7 +93,7 @@ router.route('/users')
     				lesson : less
     			});
     		})
-    	})	
+    	})
 
     })
 
@@ -110,7 +110,7 @@ router.route('/users')
 
     .get(function(req,res){
     	Lesson.find({
-    		'user.email' : req.params.email, 
+    		'user.email' : req.params.email,
     		createdAt :{
     			$gt : Number(req.params.createdAt)
     		}
@@ -118,7 +118,7 @@ router.route('/users')
     		if(err)
     			res.send(err)
     		res.json(lessons)
-    	})
+    	}).sort({createdAt : -1});
 
     })
 
@@ -126,7 +126,7 @@ router.route('/users')
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-	res.json({ message: 'hooray! welcome to our api!' });   
+	res.json({ message: 'hooray! welcome to our api!' });
 });
 
 // more routes for our API will happen here
