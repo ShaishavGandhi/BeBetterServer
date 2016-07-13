@@ -118,7 +118,7 @@ router.route('/users')
     		if(err)
     			res.send(err)
     		res.json(lessons)
-    	}).sort({createdAt : -1});
+    	}).sort({createdAt : 1});
 
     })
 
