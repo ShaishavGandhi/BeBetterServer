@@ -41,10 +41,10 @@ router.route('/')
 router.route('/:email/:date')
 
 .get(function(req,res){
-  Lesson.find({
+  Usage.find({
     'user.email' : req.params.email,
-    createdAt :{
-      $lt : Number(req.params.createdAt)
+    date :{
+      $lt : Number(req.params.date)
     }
   },function(err,lessons){
     if(err)
