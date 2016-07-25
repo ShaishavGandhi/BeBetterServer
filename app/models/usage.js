@@ -8,6 +8,7 @@ var UsageSchema = new Schema({
 	usage : Number,
 	date : Number,
   localId : Number,
+	createdAt : Number,
 	user : [{type: Schema.Types.Mixed }]
 });
 

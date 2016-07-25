@@ -11,6 +11,7 @@ router.route('/')
   var usage = new Usage();
   usage.usage = req.body.usage;
   usage.date = req.body.date;
+  usage.createdAt = new Date().getTime();
 
   User.find({"email" : req.body.email},function(err,usr){
     if(err)
