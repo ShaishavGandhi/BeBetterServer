@@ -2,7 +2,8 @@ var express = require('express');        // call express
 var router = express.Router();              // get an instance of the express Router
 var User = require('../models/user');
 var Usage = require('../models/usage');
-
+var userData = require('../data/user');
+var usageData = require('../data/usage');
 
 router.route('/')
 
@@ -11,19 +12,25 @@ router.route('/')
   var usage = new Usage();
   usage.usage = req.body.usage;
   usage.date = req.body.date;
+  usage.localId = parseInt(req.body.localId);
   usage.createdAt = new Date().getTime();
 
-  User.find({"email" : req.body.email},function(err,usr){
-    if(err)
-    res.send(err);
-    usage.user = usr;
-    usage.save(function(err,less){
-      if(err)
+
+  userData.getUserByEmail(req.body.email,function(err,user){
+    if(err){
       res.send(err);
+    }
+
+    usage.user = user;
+
+    usageData.createUsage(usage,function(err,usg){
+      if(err){
+        res.send(err)
+      }
 
       res.json({
         message : 'Usage created',
-        lesson : less
+        usage : usg
       });
     })
   })
@@ -31,27 +38,25 @@ router.route('/')
 })
 
 .get(function(req,res){
-  Usage.find(function(err,lessons){
+  usageData.getAllUsages(function(err,usages){
     if(err)
-    res.send(err)
-    res.send(lessons)
-  })
+      res.send(err);
+    res.json(usages);
+  });
 
 });
 
 router.route('/:email/:date')
 
 .get(function(req,res){
-  Usage.find({
-    'user.email' : req.params.email,
-    date :{
-      $lt : Number(req.params.date)
-    }
-  },function(err,lessons){
+
+  usageData.getUsages(req.params.email, req.params.date, function(err, usages){
+
     if(err)
-    res.send(err)
-    res.json(lessons)
-  }).sort({createdAt : 1});
+      res.send(err);      
+    res.json(usages);
+
+  })
 
 })
 

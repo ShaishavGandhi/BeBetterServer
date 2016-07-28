@@ -2,6 +2,8 @@ var express = require('express');        // call express
 var router = express.Router();              // get an instance of the express Router
 var User = require('../models/user');
 var Lesson = require('../models/lesson');
+var userData = require('../data/user');
+var lessonData = require('../data/lesson');
 
 
 router.route('/')
@@ -17,11 +19,13 @@ router.route('/')
   lesson.createdAt = Number(req.body.createdAt);
   lesson.localId = parseInt(req.body.localId);
 
-  User.find({"email" : req.body.email},function(err,usr){
+  userData.getUserByEmail(req.body.email,function(err,user){
     if(err)
-    res.send(err);
-    lesson.user = usr;
-    lesson.save(function(err,less){
+      res.send(err);
+
+    lesson.user = user;
+
+    lessonData.createLesson(lesson,function(err,less){
       if(err)
       res.send(err);
 
@@ -30,12 +34,13 @@ router.route('/')
         lesson : less
       });
     })
-  })
 
+
+  })
 })
 
 .get(function(req,res){
-  Lesson.find(function(err,lessons){
+  lessonData.getAllLessons(function(err,lessons){
     if(err)
     res.send(err)
     res.send(lessons)
@@ -46,16 +51,12 @@ router.route('/')
 router.route('/:email/:createdAt')
 
 .get(function(req,res){
-  Lesson.find({
-    'user.email' : req.params.email,
-    createdAt :{
-      $gt : Number(req.params.createdAt)
-    }
-  },function(err,lessons){
+  lessonData.getLessons(req.params.email, req.params.createdAt, function(err,lessons){
     if(err)
-    res.send(err)
-    res.json(lessons)
-  }).sort({createdAt : 1});
+      res.send(err)
+
+    res.send(lessons);
+  })
 
 })
 
