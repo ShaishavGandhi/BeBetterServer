@@ -43,4 +43,24 @@ router.route('/')
 
 });
 
+router.route('/update')
+.post(function(req,res){
+
+    var email = req.body.email;
+    var gcm_id = req.body.gcm_id;
+
+    userData.getUserByEmail(email,function(err,user){
+      if(err)
+      res.send(err)
+      
+      user.gcm_id = gcm_id;
+      userData.updateGcmId(user,function(err,usr){
+        if(err)
+        res.send(err);
+        res.json(usr);
+      })
+    })
+
+})
+
 module.exports = router;

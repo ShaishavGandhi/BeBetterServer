@@ -5,6 +5,7 @@ var UserSchema = new Schema({
 name : String,
 email : String,
 photo : String,
+gcm_id : String,
 createdAt : {  type: Date, default: Date.now},
 });
 

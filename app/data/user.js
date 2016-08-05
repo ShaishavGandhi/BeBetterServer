@@ -13,7 +13,16 @@ exports.getAllUsers = function(callback){
 }
 
 exports.getUserByEmail = function(email,callback){
-  User.find({"email" : email }, function(err, user){
+  User.findOne({"email" : email }, function(err, user){
     callback(err,user)
   })
+}
+
+exports.updateGcmId = function(user,callback){
+
+  console.log(user.gcm_id)
+  user.save(function(err,usr){
+    callback(err,usr);
+  })
+
 }
