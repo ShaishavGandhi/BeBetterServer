@@ -14,6 +14,8 @@ var quoteRoutes = require('./app/routes/quote');
 var scheduler = require('./app/scheduler/scheduler');
 var mongoose = require('mongoose');
 var gcm = require('node-gcm');
+var morgan = require('morgan')
+
 
 
 
@@ -28,6 +30,8 @@ mongoose.connect('mongodb://shaishgandhi:PinkFloyd786@ds011715.mlab.com:11715/be
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(morgan('combined'))
 
 var port = process.env.PORT || 8080;        // set our port
 
