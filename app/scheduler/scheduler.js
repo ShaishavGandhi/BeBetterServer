@@ -13,7 +13,7 @@ var message = new gcm.Message({
 exports.startQuoteScheduler = function(){
   setInterval(function(){
     sendQuote();
-  },1000*60);
+  },1000*60*60*24);
 }
 
 
@@ -24,7 +24,7 @@ function sendQuote(){
     quoteData.getRandomQuote(function(err,quote){
       if(quote==null)
         return;
-        
+
       var message = new gcm.Message({
         data : quote
       });
