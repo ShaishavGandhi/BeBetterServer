@@ -10,7 +10,12 @@ var bodyParser = require('body-parser');
 var userRoutes = require('./app/routes/user');
 var lessonRoutes = require('./app/routes/lesson');
 var usageRoutes = require('./app/routes/usage');
+var quoteRoutes = require('./app/routes/quote');
+var scheduler = require('./app/scheduler/scheduler');
 var mongoose = require('mongoose');
+var gcm = require('node-gcm');
+
+
 
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
 replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
@@ -31,6 +36,9 @@ var port = process.env.PORT || 8080;        // set our port
 app.use('/api/users', userRoutes);
 app.use('/api/lessons',lessonRoutes);
 app.use('/api/usages',usageRoutes);
+app.use('/api/quotes',quoteRoutes);
+
+scheduler.startQuoteScheduler();
 
 // START THE SERVER
 // =============================================================================

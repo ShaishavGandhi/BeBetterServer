@@ -1,4 +1,7 @@
 var User = require('../models/user');
+Object.prototype.hasOwnProperty = function(property) {
+    return this[property] !== undefined;
+};
 
 exports.createUser = function(user,callback){
   user.save(function(err){
@@ -12,6 +15,19 @@ exports.getAllUsers = function(callback){
   });
 }
 
+exports.getAllGcmIds = function(callback){
+  User.find(function(err,objs){
+    var gcm_ids = [];
+    console.log(objs.length)
+    for(var i = 0; i < objs.length; i++)
+    {
+      if(objs[i].hasOwnProperty("gcm_id"))
+        gcm_ids.push(objs[i].gcm_id);
+    }
+    callback(err,gcm_ids);
+  });
+}
+
 exports.getUserByEmail = function(email,callback){
   User.findOne({"email" : email }, function(err, user){
     callback(err,user)
@@ -19,8 +35,6 @@ exports.getUserByEmail = function(email,callback){
 }
 
 exports.updateGcmId = function(user,callback){
-
-  console.log(user.gcm_id)
   user.save(function(err,usr){
     callback(err,usr);
   })
