@@ -6,14 +6,26 @@ var quoteData = require('../data/quote');
 // Set up the sender with you API key, prepare your recipients' registration tokens.
 var sender = new gcm.Sender('AIzaSyCdvqRAUYoohhmaj4NFcMeAczk5FcuAo8k');
 
-var message = new gcm.Message({
-    data: { key1: 'Shaishav' }
-});
+
 
 exports.startQuoteScheduler = function(){
-  setInterval(function(){
-    sendQuote();
-  },1000*60*60*24);
+  var now = new Date().getTime();
+  var eightPm = new Date();
+  eightPm.setHours(8);
+  eightPm.setMinutes(0);
+
+  var timeToEightPm = eightPm.getTime() - now;
+
+  if(timeToEightPm < 0)
+  timeToEightPm += 86400000;
+
+  console.log(timeToEightPm);
+
+  setTimeout(function(){
+    setInterval(function(){
+      sendQuote();
+    },1000*60*60*24);
+  },timeToEightPm);
 }
 
 
@@ -23,7 +35,7 @@ function sendQuote(){
 
     quoteData.getRandomQuote(function(err,quote){
       if(quote==null)
-        return;
+      return;
 
       var message = new gcm.Message({
         data : quote
@@ -31,9 +43,9 @@ function sendQuote(){
 
       sender.send(message, { registrationTokens: regTokens }, function (err, response) {
         if(err)
-          console.error(err);
+        console.error(err);
         else
-          console.log(response);
+        console.log(response);
       });
 
       quoteData.setAsUsed(quote,function(err,res){});
