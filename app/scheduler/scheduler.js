@@ -11,8 +11,8 @@ var sender = new gcm.Sender('AIzaSyCdvqRAUYoohhmaj4NFcMeAczk5FcuAo8k');
 exports.startQuoteScheduler = function(){
   var now = new Date().getTime();
   var eightPm = new Date();
-  eightPm.setHours(8);
-  eightPm.setMinutes(0);
+  eightPm.setHours(11);
+  eightPm.setMinutes(00);
 
   var timeToEightPm = eightPm.getTime() - now;
 
@@ -22,6 +22,7 @@ exports.startQuoteScheduler = function(){
   console.log(timeToEightPm);
 
   setTimeout(function(){
+    sendQuote();
     setInterval(function(){
       sendQuote();
     },1000*60*60*24);
