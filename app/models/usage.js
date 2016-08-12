@@ -9,7 +9,7 @@ var UsageSchema = new Schema({
 	date : Number,
   localId : Number,
 	createdAt : Number,
-	user : [{type: Schema.Types.Mixed }]
+	user : {type: Schema.Types.Mixed }
 });
 
 module.exports = mongoose.model('Usages',UsageSchema);

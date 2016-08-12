@@ -11,7 +11,7 @@ var LessonSchema = new Schema({
 	createdAt : Number,
 	localId : Number,
 	public : Boolean,
-	user : [{type: Schema.Types.Mixed }]
+	user : {type: Schema.Types.Mixed }
 
 });
 

@@ -20,7 +20,7 @@ router.route('/')
     if(err){
       res.send(err);
     }
-
+    
     usage.user = user;
 
     usageData.createUsage(usage,function(err,usg){
@@ -53,7 +53,7 @@ router.route('/:email/:date')
   usageData.getUsages(req.params.email, req.params.date, function(err, usages){
 
     if(err)
-      res.send(err);      
+      res.send(err);
     res.json(usages);
 
   })
