@@ -18,6 +18,7 @@ router.route('/')
   user.name = req.body.name;  // set the user name (comes from the request)
   user.email = req.body.email;
   user.photo = req.body.photo;
+  user.gcm_id = req.body.gcm_id;
   user.createdAt = new Date().getTime();
 
   // save the user and check for errors
@@ -52,7 +53,7 @@ router.route('/update')
     userData.getUserByEmail(email,function(err,user){
       if(err)
       res.send(err)
-      
+
       user.gcm_id = gcm_id;
       userData.updateGcmId(user,function(err,usr){
         if(err)
