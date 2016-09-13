@@ -3,6 +3,14 @@ Object.prototype.hasOwnProperty = function(property) {
     return this[property] !== undefined;
 };
 
+exports.getOneGcm = function(callback){
+  User.findOne({"email" : "shaishavgandhi05@gmail.com"},function(err,res){
+    var gcm_ids = [];
+    gcm_ids.push(res.gcm_id);
+    callback(err,gcm_ids)
+  })
+}
+
 exports.createUser = function(user,callback){
   user.save(function(err){
     callback(err);

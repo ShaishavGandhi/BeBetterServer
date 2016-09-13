@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var userRoutes = require('./app/routes/user');
 var lessonRoutes = require('./app/routes/lesson');
 var usageRoutes = require('./app/routes/usage');
+var goalRoutes = require('./app/routes/goal');
 var quoteRoutes = require('./app/routes/quote');
 var scheduler = require('./app/scheduler/scheduler');
 var mongoose = require('mongoose');
@@ -41,6 +42,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/lessons',lessonRoutes);
 app.use('/api/usages',usageRoutes);
 app.use('/api/quotes',quoteRoutes);
+app.use('/api/goals', goalRoutes);
 
 scheduler.startQuoteScheduler();
 
