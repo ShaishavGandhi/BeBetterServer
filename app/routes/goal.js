@@ -29,8 +29,8 @@ router.route('/')
       }
 
       res.json({
-        message : 'Goal created',
-        goal : usg
+        action : 'SUCCESS',
+        response : usg
       });
     })
   })
@@ -41,7 +41,10 @@ router.route('/')
   goalData.getAllGoals(function(err,usages){
     if(err)
       res.send(err);
-    res.json(usages);
+    res.json({
+      action : "SUCCESS",
+      response : usages
+    });
   });
 
 });
@@ -54,7 +57,10 @@ router.route('/:email/:date')
 
     if(err)
       res.send(err);
-    res.json(usages);
+    res.json({
+      action : "SUCCESS",
+      response : usages
+    });
 
   })
 

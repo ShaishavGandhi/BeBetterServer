@@ -22,15 +22,30 @@ router.route('/')
   user.createdAt = new Date().getTime();
 
   // save the user and check for errors
+  userData.getUserByEmail(user.email, function(err, existingUser){
+    if(existingUser == null){
+      console.log("Entered creation");
+      userData.createUser(user, function(error, newUser){
 
-  userData.createUser(user,function(err){
-    if(err){
-      res.send(err)
+        console.log(error);
+        console.log(newUser);
+        if(error){
+          res.send(err)
+        }
+
+        res.json({
+          action : "SUCESS",
+          response : newUser
+        });
+      })
     }
-
-    res.json({message : 'User created!'});
+    else{
+      res.send({
+        action : "SUCCESS",
+        response : existingUser
+      })
+    }
   })
-
 })
 
 .get(function(req,res){
@@ -39,7 +54,10 @@ router.route('/')
     if(err){
       res.send(err);
     }
-    res.json(users)
+    res.json({
+      action : "SUCESS",
+      response : users
+    })
   })
 
 });
@@ -47,20 +65,24 @@ router.route('/')
 router.route('/update')
 .post(function(req,res){
 
-    var email = req.body.email;
-    var gcm_id = req.body.gcm_id;
+  var email = req.body.email;
+  var gcm_id = req.body.gcm_id;
 
-    userData.getUserByEmail(email,function(err,user){
-      if(err)
-      res.send(err)
+  userData.getUserByEmail(email,function(err,user){
+    if(err)
+    res.send(err)
 
-      user.gcm_id = gcm_id;
-      userData.updateGcmId(user,function(err,usr){
-        if(err)
+    user.gcm_id = gcm_id;
+    userData.updateGcmId(user,function(err,usr){
+      if(err){
         res.send(err);
-        res.json(usr);
-      })
+      }
+      res.json({
+        action : "SUCCESS",
+        response : usr
+      });
     })
+  })
 
 })
 

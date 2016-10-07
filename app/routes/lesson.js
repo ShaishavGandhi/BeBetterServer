@@ -30,8 +30,8 @@ router.route('/')
       res.send(err);
 
       res.json({
-        message : 'Lesson created',
-        lesson : less
+        action : "SUCCESS",
+        response : less
       });
     })
 
@@ -43,7 +43,10 @@ router.route('/')
   lessonData.getAllLessons(function(err,lessons){
     if(err)
     res.send(err)
-    res.send(lessons)
+    res.json({
+      action : "SUCESS",
+      response : lessons
+    })
   })
 
 });
@@ -55,7 +58,10 @@ router.route('/:email/:createdAt')
     if(err)
       res.send(err)
 
-    res.send(lessons);
+    res.json({
+      action : "SUCESS",
+      response : lessons
+    });
   })
 
 })

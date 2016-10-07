@@ -20,7 +20,7 @@ router.route('/')
     if(err){
       res.send(err);
     }
-    
+
     usage.user = user;
 
     usageData.createUsage(usage,function(err,usg){
@@ -29,7 +29,7 @@ router.route('/')
       }
 
       res.json({
-        message : 'Usage created',
+        action : 'SUCCESS',
         usage : usg
       });
     })
@@ -41,7 +41,10 @@ router.route('/')
   usageData.getAllUsages(function(err,usages){
     if(err)
       res.send(err);
-    res.json(usages);
+    res.json({
+      action : "SUCCESS",
+      response : usages
+    });
   });
 
 });
@@ -54,7 +57,10 @@ router.route('/:email/:date')
 
     if(err)
       res.send(err);
-    res.json(usages);
+    res.json({
+      action : "SUCCESS",
+      response : usages
+    });
 
   })
 
