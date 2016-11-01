@@ -34,11 +34,11 @@ router.route('/')
 
 });
 
-router.route('/search/:query')
+router.route('/search')
 
 .get(function(req,res){
 
-  categoryData.getCategories(req.params.query, function(err, categories){
+  categoryData.getCategories(req.param("query"), function(err, categories){
 
     if (err) {
       res.send(err);
