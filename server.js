@@ -12,10 +12,11 @@ var lessonRoutes = require('./app/routes/lesson');
 var usageRoutes = require('./app/routes/usage');
 var goalRoutes = require('./app/routes/goal');
 var quoteRoutes = require('./app/routes/quote');
+var categoryRoutes = require('./app/routes/category');
 var scheduler = require('./app/scheduler/scheduler');
 var mongoose = require('mongoose');
 var gcm = require('node-gcm');
-var morgan = require('morgan')
+var morgan = require('morgan');
 
 
 
@@ -43,6 +44,7 @@ app.use('/api/lessons',lessonRoutes);
 app.use('/api/usages',usageRoutes);
 app.use('/api/quotes',quoteRoutes);
 app.use('/api/goals', goalRoutes);
+app.use('/api/categories', categoryRoutes);
 
 scheduler.startQuoteScheduler();
 
